@@ -86,6 +86,6 @@ H=function(t) log(1+t)+t^(3/2) # specify the H function
 data=data_for_est(r=0,beta=c(-1),gamma=c(-1),theta=1,n=300,H=H)
 
 #estimate the parameters
-result=MM_est(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
+result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 }
