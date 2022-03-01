@@ -698,7 +698,6 @@ arma::vec UpdateOncenocluster(const arma::vec&lastpar,const arma::mat&rules,cons
                               const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                               const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,
                               const bool&penind,const double&lambda,const arma::mat&R){
-    int order=rules.n_rows;
     arma::mat ParFirstDeriv,PsiFirstDeriv,ParSecond,PsiSecond;
     ParFirstDeriv=arma::zeros(betadim+gammadim,1);
     PsiFirstDeriv=arma::zeros(lastpar.n_elem-betadim-gammadim,1);
@@ -942,7 +941,6 @@ double likelihoodfunc1currentnocluster(const double&b,const arma::vec&parameters
     
     
     
-    result=result;
     result=std::exp(result);
     return result;
 }
