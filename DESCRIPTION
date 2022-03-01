@@ -1,0 +1,11 @@
+Package: MMGOR
+Type: Package
+Title: Function for fitting generalized odds rate model to clustered current status data using a novel minorize-maximiz algorithm
+Version: 1.0
+Date: 2022-03-01
+Author: Tong Wang, Kejun He, Wei Ma, Dipankar Bandyopadhyay, Samiran Sinha
+Maintainer: Tong Wang <wangtong@nankai.edu.cn>
+Description:Estimating parameters of the generalized odds rate model with clustered current status data.
+License: Unlimited
+Imports: Rcpp (>= 1.0.4.6)
+LinkingTo: Rcpp, RcppArmadillo
