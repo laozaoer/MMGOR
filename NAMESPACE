@@ -1,3 +1,0 @@
-useDynLib(MMGOR, .registration=TRUE)
-importFrom(Rcpp, evalCpp)
-exportPattern("^[[:alpha:]]+")
