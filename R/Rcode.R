@@ -1,10 +1,10 @@
 Data_object=function(t,X,Z,b,r,beta,gamma,theta,U,H){
   Ht=H(t)
   if(r>0){
-    S=(1+r*Ht*exp(beta*X+gamma*Z+theta*b))^(-1/r)
+    S=(1+r*Ht*exp(sum(beta*X)+sum(gamma*Z)+theta*b))^(-1/r)
   }
   else{
-    S=exp(-Ht*exp(beta*X+gamma*Z+theta*b))
+    S=exp(-Ht*exp(sum(beta*X)+sum(gamma*Z)+theta*b))
   }
   
   return(S-U)
@@ -20,14 +20,15 @@ Generate_T=function(X,Z,b,r,beta,gamma,theta,n,ni,H){
   for (i in 1:n) {
     result[[i]]=rep(0,ni[i])
     for (j in 1:ni[i]) {
-      result[[i]][j]=Generate_singleT(X[[i]][j],Z[i],b[i],r,beta,gamma,theta,H)
+      result[[i]][j]=Generate_singleT(X[[i]][j,],Z[i,],b[i],r,beta,gamma,theta,H)
     }
   }
   return(result)
 }
 data_for_est=function(r,beta,gamma,theta,n,H){
-  
-  Z=runif(n,-1,1)
+  betadim=length(beta)
+  gammadim=length(gamma)
+  Z=matrix(runif(n*gammadim,-1,1),nrow = n,ncol = gammadim)
   mi=rep(0,n)
   b=rnorm(n,0,1)
   for(i in 1:n){
@@ -41,9 +42,9 @@ data_for_est=function(r,beta,gamma,theta,n,H){
   X=list()
   length(X)=n
   for (i in 1:n) {
-    X[[i]]=as.matrix(runif(mi[i],-1,1))
+    X[[i]]=matrix(runif(mi[i]*betadim,-1,1),nrow = mi[i],ncol=betadim)
   }
-  Z=as.matrix(Z)
+  
   
   
   rawC=suppressWarnings(Generate_T(X,Z,b,r,beta,gamma,theta,n,mi,H))
@@ -112,8 +113,9 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       log_likelihood=testquadrature1current(parest[,1],rules=myrules,Delta=Delta,
                                             X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=FALSE,lambda=0,R=R)
       
+      
       for (i in ((betadim+1):(gammadim+betadim))) {
-        rownames(result)[i]=paste("gamma","1",sep="_")
+        rownames(result)[i]=paste("gamma",i-betadim,sep="_")
       }
       rownames(result)[betadim+gammadim+1]="theta"
       result[,2]=sqrt(result[,2])
@@ -155,7 +157,7 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       log_likelihood=testquadrature1current(parest[,1],rules=myrules,Delta=Delta,
                                             X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=FALSE,lambda=0,R=R)
       for(i in 1:betadim){
-        rownames(result)[i]=paste("beta","1",sep = "_")
+        rownames(result)[i]=paste("beta",i,sep = "_")
       }
       
       rownames(result)[betadim+gammadim+1]="theta"
@@ -200,10 +202,10 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       log_likelihood=testquadrature1current(parest[,1],rules=myrules,Delta=Delta,
                                             X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=FALSE,lambda=0,R=R)
       for(i in 1:betadim){
-        rownames(result)[i]=paste("beta","1",sep = "_")
+        rownames(result)[i]=paste("beta",i,sep = "_")
       }
       for (i in ((betadim+1):(gammadim+betadim))) {
-        rownames(result)[i]=paste("gamma","1",sep="_")
+        rownames(result)[i]=paste("gamma",i-betadim,sep="_")
       }
       rownames(result)[betadim+gammadim+1]="theta"
       result[,2]=sqrt(result[,2])
@@ -247,10 +249,10 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
     log_likelihood=testquadrature1currentnocluster(parest[,1],rules=myrules,Delta=Delta,
                                                    X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=FALSE,lambda=0,R=R)
     for(i in 1:betadim){
-      rownames(result)[i]=paste("beta","1",sep = "_")
+      rownames(result)[i]=paste("beta",i,sep = "_")
     }
     for (i in ((betadim+1):(gammadim+betadim))) {
-      rownames(result)[i]=paste("gamma","1",sep="_")
+      rownames(result)[i]=paste("gamma",i-betadim,sep="_")
     }
     result[,2]=sqrt(result[,2])
     result=round(result,digits = 3)

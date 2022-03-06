@@ -2,7 +2,7 @@
 \alias{GOR_MM}
 \title{Estimating parameters of the generalized odds rate model with clustered current status data.}
 \description{
-GOR_MM is used to analyze clustered current status data for the generalized odds rate model.
+GOR_MM is used to analyze clustered current status data by fitting the generalized odds rate model. This is the main function of this package. It is assumed that a clustered dataset has \eqn{n} units and there are \eqn{n_i}subjects within the \eqn{i}th unit.  Let \eqn{N=\sum_in_i} be the total number of subject.  The response and explanatory variables are measured for every subjects. Response consists of \eqn{\Delta}, the censoring indicator, and \eqn{C}, the inspection time.   It is assumed that there is also a set of unit level covariates.  
 }
 \usage{
 GOR_MM(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,
@@ -20,11 +20,11 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   \item{Z}{
   A matrix containing the subject level covariates. If there is no subject level covariate, let Z=NULL.
 }
-  \item{n}{An integer containing the numbers of total subjects.}
+  \item{n}{An integer that denotes the number of units (clusters). }
   \item{ni}{
-  A vector containing numbers of observations within each subject.}
+  An \eqn{n\times 1} vector of integers. The sum of the elements of this vector equals to $N$. }
   \item{r}{
-  A scalar which specifies the the generalized odds rate model.}
+  A scalar that specifies the  generalized odds rate model.}
  \item{C}{
  A list, each component is a vector containing the inspection time for each subject.
  }
@@ -34,10 +34,10 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
    \item{order}{
    An integer indicating the  degree of integrated B-splines. }
    \item{cluster.ind=TRUE}{
-   Logical. If TRUE, the parameters will be estimated along with clustering effect. The default value is TRUE.
+   Logical. If TRUE, the parameters will be estimated along with clustering effect. If it is FALSE, then all subjects are treated as independent and there is no clustering effect.  The default value is TRUE.
    }
  \item{pen.ind}{
- Logical. If FALSE, there is no penalty term. The default value is FALSE. If TRUE, users should specify a lambda value.
+ Logical. If FALSE, there is no penalty term. The default value is FALSE. If TRUE, users should specify a a positive value for the penalty term lambda.
  }
  \item{lambda}{
  A scalar containing the penalty parameter. The default value is 0.

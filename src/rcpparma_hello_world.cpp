@@ -188,7 +188,7 @@ double likelihoodinocluster(const arma::vec&parameters,
 
 // [[Rcpp::export]]
 arma::mat weightfunction(const arma::vec&parameters,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                         const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                         const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                          const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim){
     int order=rules.n_rows;
     arma::vec normvec=arma::zeros(order);
@@ -651,7 +651,7 @@ arma::field<arma::mat> DerivCalnocluster(const arma::vec&lastpar,
 
 // [[Rcpp::export]]
 arma::vec UpdateOnce(const arma::vec&lastpar,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                     const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                     const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                      const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,
                      const bool&penind,const double&lambda,const arma::mat&R){
     int order=rules.n_rows;
@@ -695,7 +695,7 @@ arma::vec UpdateOnce(const arma::vec&lastpar,const arma::mat&rules,const arma::f
 
 // [[Rcpp::export]]
 arma::vec UpdateOncenocluster(const arma::vec&lastpar,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                              const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                              const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                               const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,
                               const bool&penind,const double&lambda,const arma::mat&R){
     int order=rules.n_rows;
@@ -737,7 +737,7 @@ arma::vec UpdateOncenocluster(const arma::vec&lastpar,const arma::mat&rules,cons
 
 // [[Rcpp::export]]
 arma::vec MainFunc(const arma::vec&lastpar,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                   const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                   const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                    const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,const int&itermax,const double&criterion,
                    const bool&penind,const double&lambda,const arma::mat&R){
     arma::mat result,lastresult;
@@ -758,7 +758,7 @@ arma::vec MainFunc(const arma::vec&lastpar,const arma::mat&rules,const arma::fie
 
 // [[Rcpp::export]]
 arma::vec MainFuncnocluster(const arma::vec&lastpar,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                            const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                            const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                             const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,const int&itermax,const double&criterion,
                             const bool&penind,const double&lambda,const arma::mat&R){
     arma::mat result,lastresult;
@@ -953,7 +953,7 @@ double likelihoodfunc1currentnocluster(const double&b,const arma::vec&parameters
 
 // [[Rcpp::export]]
 double testquadrature1current(const arma::vec&parameters,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                              const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                              const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                               const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,
                               const bool&penind,const double&lambda,const arma::mat&R){
     int totaldim=parameters.n_elem;
@@ -988,7 +988,7 @@ double testquadrature1current(const arma::vec&parameters,const arma::mat&rules,c
 
 // [[Rcpp::export]]
 double testquadrature1currentnocluster(const arma::vec&parameters,const arma::mat&rules,const arma::field<arma::vec>&Delta,
-                                       const arma::field<arma::vec>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
+                                       const arma::field<arma::mat>&X,const arma::mat&Z,const int&n,const arma::vec&ni,
                                        const double&r,const arma::field<arma::mat>&blC,const int&betadim,const int&gammadim,
                                        const bool&penind,const double&lambda,const arma::mat&R){
     int totaldim=parameters.n_elem;
