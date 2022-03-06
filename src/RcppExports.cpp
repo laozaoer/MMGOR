@@ -105,7 +105,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // weightfunction
-arma::mat weightfunction(const arma::vec& parameters, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim);
+arma::mat weightfunction(const arma::vec& parameters, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim);
 RcppExport SEXP _MMGOR_weightfunction(SEXP parametersSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -113,7 +113,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type parameters(parametersSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
@@ -165,7 +165,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // UpdateOnce
-arma::vec UpdateOnce(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
+arma::vec UpdateOnce(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
 RcppExport SEXP _MMGOR_UpdateOnce(SEXP lastparSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP, SEXP penindSEXP, SEXP lambdaSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -173,7 +173,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type lastpar(lastparSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
@@ -189,7 +189,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // UpdateOncenocluster
-arma::vec UpdateOncenocluster(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
+arma::vec UpdateOncenocluster(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
 RcppExport SEXP _MMGOR_UpdateOncenocluster(SEXP lastparSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP, SEXP penindSEXP, SEXP lambdaSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -197,7 +197,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type lastpar(lastparSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
@@ -213,7 +213,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // MainFunc
-arma::vec MainFunc(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const int& itermax, const double& criterion, const bool& penind, const double& lambda, const arma::mat& R);
+arma::vec MainFunc(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const int& itermax, const double& criterion, const bool& penind, const double& lambda, const arma::mat& R);
 RcppExport SEXP _MMGOR_MainFunc(SEXP lastparSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP, SEXP itermaxSEXP, SEXP criterionSEXP, SEXP penindSEXP, SEXP lambdaSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -221,7 +221,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type lastpar(lastparSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
@@ -239,7 +239,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // MainFuncnocluster
-arma::vec MainFuncnocluster(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const int& itermax, const double& criterion, const bool& penind, const double& lambda, const arma::mat& R);
+arma::vec MainFuncnocluster(const arma::vec& lastpar, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const int& itermax, const double& criterion, const bool& penind, const double& lambda, const arma::mat& R);
 RcppExport SEXP _MMGOR_MainFuncnocluster(SEXP lastparSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP, SEXP itermaxSEXP, SEXP criterionSEXP, SEXP penindSEXP, SEXP lambdaSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -247,7 +247,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type lastpar(lastparSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
@@ -305,7 +305,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // testquadrature1current
-double testquadrature1current(const arma::vec& parameters, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
+double testquadrature1current(const arma::vec& parameters, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
 RcppExport SEXP _MMGOR_testquadrature1current(SEXP parametersSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP, SEXP penindSEXP, SEXP lambdaSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -313,7 +313,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type parameters(parametersSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
@@ -329,7 +329,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // testquadrature1currentnocluster
-double testquadrature1currentnocluster(const arma::vec& parameters, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::vec>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
+double testquadrature1currentnocluster(const arma::vec& parameters, const arma::mat& rules, const arma::field<arma::vec>& Delta, const arma::field<arma::mat>& X, const arma::mat& Z, const int& n, const arma::vec& ni, const double& r, const arma::field<arma::mat>& blC, const int& betadim, const int& gammadim, const bool& penind, const double& lambda, const arma::mat& R);
 RcppExport SEXP _MMGOR_testquadrature1currentnocluster(SEXP parametersSEXP, SEXP rulesSEXP, SEXP DeltaSEXP, SEXP XSEXP, SEXP ZSEXP, SEXP nSEXP, SEXP niSEXP, SEXP rSEXP, SEXP blCSEXP, SEXP betadimSEXP, SEXP gammadimSEXP, SEXP penindSEXP, SEXP lambdaSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -337,7 +337,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type parameters(parametersSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type rules(rulesSEXP);
     Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type Delta(DeltaSEXP);
-    Rcpp::traits::input_parameter< const arma::field<arma::vec>& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type ni(niSEXP);
