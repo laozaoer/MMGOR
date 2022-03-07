@@ -13,27 +13,30 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   
 
   \item{Delta}{
-        A list, each component of the list is a vector containing  indicators of the censoring for each observation with 1 or 0 indicating left or right censoring, respectively.}
+        A list of \eqn{n} components, the \eqn{i}th component of the list is a \eqn{n_i\times 1} vector containing  indicators for censoring. The values 0 and 1 indicate left censored and right censored, respectively.}
+        
   \item{X}{
-  A list, each component is a matrix containing the within-subject level covariates. If there is no within-subject level covariates, let X=NULL.
+  A list of \eqn{n} components, the \eqn{i}th component is a \eqn{n_i\times p} matrix of  subject-level covariates. All columns of each matrix is assumed to be binary or numeric. For including a nominal categorical variable, the corresponding dummy variables must be included in this matrix. If there is no subject-level covariate (that means \eqn{p=0}), then set \eqn{X=}NULL.
+
   }
   \item{Z}{
-  A matrix containing the subject level covariates. If there is no subject level covariate, let Z=NULL.
+  An \eqn{n\times q} matrix of unit-level (cluster-level) covariates. All columns of this matrix is assumed to be binary or numeric. For including a nominal categorical variable, the corresponding dummy variables must be included in this matrix. If there is no unit-level covariate (that means \eqn{q=0}), then set \eqn{Z=}NULL.
 }
   \item{n}{An integer that denotes the number of units (clusters). }
   \item{ni}{
-  An \eqn{n\times 1} vector of integers. The sum of the elements of this vector equals to $N$. }
+  An \eqn{n\times 1} vector of integers. The sum of the elements of this vector equals to \eqn{N}. }
   \item{r}{
   A scalar that specifies the  generalized odds rate model.}
  \item{C}{
- A list, each component is a vector containing the inspection time for each subject.
+ A list of \eqn{n} components, the \eqn{i}th component is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th units. The inspection time must be positive for all subjects. 
+ 
  }
     \item{knotsnum}{
     An integer indicating the number of equidistant interior knots for the integrated B-spline approximation of the nonparametric component of the GOR model. 
    }
    \item{order}{
    An integer indicating the  degree of integrated B-splines. }
-   \item{cluster.ind=TRUE}{
+   \item{cluster.ind}{
    Logical. If TRUE, the parameters will be estimated along with clustering effect. If it is FALSE, then all subjects are treated as independent and there is no clustering effect.  The default value is TRUE.
    }
  \item{pen.ind}{
@@ -75,32 +78,42 @@ Wang, T., He, K., Ma, W., Bandyopadhyay, D., and Sinha, S. (2022). Minorize-Maxi
 
 
 \examples{
+
+library(gaussquad)
+library(extraDistr)
+library(fda)
+library(splines2)
+library(nleqslv)
+
+library(MMGOR)
 set.seed(1)
 H=function(t) log(1+t)+t^(3/2) # specify the H function
 
 #This function generates a cohort with 300 subjects, 
 #where each subject has up to 8 observations. 
-#Both the covariates of subject level and within-subject
-#level are generated from uniform(-1,1) distribution. 
-#Users can use their own H function by changing the specific H function form.
-#3 within-subject level covariates, 2 subject level covariates
+#Both the subject-level covariates and unit-level covariates
+# are generated from Uniform(-1,1) distribution. 
+#Users can use their own H function.
+
+#Scenario 1
+#3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
 data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H)
 #estimate the parameters
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
-
-#only 2 subject level covariates
+#Scenario 2
+#only 2 unit-level covariates (p=0,q=2)
 data=data_for_est(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H)
 #estimate the parameters
-result=GOR_MM(data$Delta,NULL,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
+result=GOR_MM(data$Delta,X=NULL,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
-
-#only 3 within-subject level covariates
+#Scenario 3
+#only 3 subject-level covariates (p=3,q=0)
 data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H)
-result=GOR_MM(data$Delta,data$X,NULL,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
+result=GOR_MM(data$Delta,data$X,Z=NULL,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
-
-#3 within-subject level covariates, 2 subject level covariates
+#Scenario 4
+#3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
 #no clustering effect
 data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H)
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,cluster.ind = FALSE,
