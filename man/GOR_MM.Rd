@@ -83,9 +83,27 @@ H=function(t) log(1+t)+t^(3/2) # specify the H function
 #Both the covariates of subject level and within-subject
 #level are generated from uniform(-1,1) distribution. 
 #Users can use their own H function by changing the specific H function form.
-data=data_for_est(r=0,beta=c(-1),gamma=c(-1),theta=1,n=300,H=H)
-
+#3 within-subject level covariates, 2 subject level covariates
+data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H)
 #estimate the parameters
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
+
+
+#only 2 subject level covariates
+data=data_for_est(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H)
+#estimate the parameters
+result=GOR_MM(data$Delta,NULL,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
+
+
+#only 3 within-subject level covariates
+data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H)
+result=GOR_MM(data$Delta,data$X,NULL,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
+
+
+#3 within-subject level covariates, 2 subject level covariates
+#no clustering effect
+data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H)
+result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,cluster.ind = FALSE,
+knotsnum = 2,order=2)
 
 }
