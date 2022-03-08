@@ -1,4 +1,4 @@
 useDynLib(MMGOR, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
 importFrom(gaussquad)
-exportPattern("^[[:alpha:]]+")
+exportPattern("data_for_est","GOR_MM")
