@@ -69,7 +69,7 @@ data_for_est=function(r,beta,gamma,theta,n,H){
   
   return(list(X=X,Z=Z,n=n,ni=mi,r=r,Delta=Delta,C=C))
 }
-Sim_data=function(r,beta,gamma,theta,n,H,C_inte=c(0,1)){
+Sim_data=function(r,beta,gamma,theta,n,H,C_inte){
   betadim=length(beta)
   gammadim=length(gamma)
   Z=matrix(runif(n*gammadim,-1,1),nrow = n,ncol = gammadim)

@@ -78,12 +78,6 @@ Wang, T., He, K., Ma, W., Bandyopadhyay, D., and Sinha, S. (2022). Minorize-Maxi
 
 
 \examples{
-#load pre-required packages for data generation
-library(gaussquad)
-library(extraDistr)
-library(fda)
-library(splines2)
-library(nleqslv)
 
 library(MMGOR)
 set.seed(1)
@@ -97,25 +91,25 @@ H=function(t) log(1+t)+t^(3/2) # specify the H function
 
 #Scenario 1
 #3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
-data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H)
+data=Sim_data(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H,C_inte=c(0,1))
 #estimate the parameters
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 2
 #only 2 unit-level covariates (p=0,q=2)
-data=data_for_est(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H)
+data=Sim_data(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H,C_inte=c(0,1))
 #estimate the parameters
 result=GOR_MM(data$Delta,X=NULL,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 3
 #only 3 subject-level covariates (p=3,q=0)
-data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H)
+data=Sim_data(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H,C_inte=c(0,1))
 result=GOR_MM(data$Delta,data$X,Z=NULL,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 4
 #3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
 #no clustering effect
-data=data_for_est(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H)
+data=Sim_data(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H,C_inte=c(0,1))
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,cluster.ind = FALSE,
 knotsnum = 2,order=2)
 
