@@ -1,4 +1,3 @@
 useDynLib(MMGOR, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
-importFrom(gaussquad)
 exportPattern("^[[:alpha:]]+")
