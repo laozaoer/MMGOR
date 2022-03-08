@@ -2,7 +2,7 @@
 \alias{GOR_MM}
 \title{Estimating parameters of the generalized odds rate model with clustered current status data.}
 \description{
-GOR_MM is used to analyze clustered current status data by fitting the generalized odds rate model. This is the main function of this package. It is assumed that a clustered dataset has \eqn{n} units and there are \eqn{n_i}subjects within the \eqn{i}th unit.  Let \eqn{N=\sum_in_i} be the total number of subject.  The response and explanatory variables are measured for every subjects. Response consists of \eqn{\Delta}, the censoring indicator, and \eqn{C}, the inspection time.   It is assumed that there is also a set of unit level covariates.  
+GOR_MM is used to analyze clustered current status data by fitting the generalized odds rate model. This is the main function of this package. It is assumed that a clustered dataset has \eqn{n} units and there are \eqn{n_i} subjects within the \eqn{i}th unit.  Let \eqn{N=\sum_in_i} be the total number of subject.  The response and explanatory variables are measured for every subjects. Response consists of \eqn{\Delta}, the censoring indicator, and \eqn{C}, the inspection time.   It is assumed that there is also a set of unit level covariates.  
 }
 \usage{
 GOR_MM(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,
@@ -13,10 +13,10 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   
 
   \item{Delta}{
-        A list of \eqn{n} components, the \eqn{i}th component of the list is a \eqn{n_i\times 1} vector containing  indicators for censoring. The values 0 and 1 indicate left censored and right censored, respectively.}
+        A list of \eqn{n} components, the \eqn{i}th component of the list is an \eqn{n_i\times 1} vector containing  indicators for censoring. The values 0 and 1 indicate left censored and right censored, respectively.}
         
   \item{X}{
-  A list of \eqn{n} components, the \eqn{i}th component is a \eqn{n_i\times p} matrix of  subject-level covariates. All columns of each matrix is assumed to be binary or numeric. For including a nominal categorical variable, the corresponding dummy variables must be included in this matrix. If there is no subject-level covariate (that means \eqn{p=0}), then set \eqn{X=}NULL.
+  A list of \eqn{n} components, the \eqn{i}th component is an \eqn{n_i\times p} matrix of  subject-level covariates. All columns of each matrix is assumed to be binary or numeric. For including a nominal categorical variable, the corresponding dummy variables must be included in this matrix. If there is no subject-level covariate (that means \eqn{p=0}), then set \eqn{X=}NULL.
 
   }
   \item{Z}{
@@ -28,7 +28,7 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   \item{r}{
   A scalar that specifies the  generalized odds rate model.}
  \item{C}{
- A list of \eqn{n} components, the \eqn{i}th component is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th units. The inspection time must be positive for all subjects. 
+ A list of \eqn{n} components, the \eqn{i}th component is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th unit. The inspection time must be positive for all subjects. 
  
  }
     \item{knotsnum}{
@@ -40,7 +40,7 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
    Logical. If TRUE, the parameters will be estimated along with clustering effect. If it is FALSE, then all subjects are treated as independent and there is no clustering effect.  The default value is TRUE.
    }
  \item{pen.ind}{
- Logical. If FALSE, there is no penalty term. The default value is FALSE. If TRUE, users should specify a a positive value for the penalty term lambda.
+ Logical. If FALSE, there is no penalty term. The default value is FALSE. If TRUE, users should specify a  positive value for the penalty term lambda.
  }
  \item{lambda}{
  A scalar containing the penalty parameter. The default value is 0.
@@ -78,7 +78,7 @@ Wang, T., He, K., Ma, W., Bandyopadhyay, D., and Sinha, S. (2022). Minorize-Maxi
 
 
 \examples{
-
+#load pre-required packages for data generation
 library(gaussquad)
 library(extraDistr)
 library(fda)
