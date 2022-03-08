@@ -32,7 +32,7 @@ data_for_est=function(r,beta,gamma,theta,n,H){
   mi=rep(0,n)
   b=rnorm(n,0,1)
   for(i in 1:n){
-    mi[i]=rtpois(1,exp(1.7),a=1,b=8)
+    mi[i]=extraDistr::rtpois(1,exp(1.7),a=1,b=8)
   }
   C=list()
   length(C)=n+1
@@ -84,12 +84,12 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       knots <- seq(0,1  , length.out = (knotsnum + 2))
       knots=knots[3:length(knots)-1]
       for (i in 1:n) {
-        blC[[i]]=t(ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
+        blC[[i]]=t(splines2::ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
       }
-      bspl1.1 <- create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
-      R <- bsplinepen(bspl1.1, Lfdobj = 1)
+      bspl1.1 <- fda::create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
+      R <- fda::bsplinepen(bspl1.1, Lfdobj = 1)
       
-      myrules=hermite.h.quadrature.rules(quadnum,normalized=FALSE)
+      myrules=gaussquad::hermite.h.quadrature.rules(quadnum,normalized=FALSE)
       myrules=as.matrix(myrules[[quadnum]])
       initial_value=rep(0,(betadim+gammadim+knotsnum+order+2))
       X=list()
@@ -132,12 +132,12 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       knots <- seq(0,1  , length.out = (knotsnum + 2))
       knots=knots[3:length(knots)-1]
       for (i in 1:n) {
-        blC[[i]]=t(ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
+        blC[[i]]=t(splines2::ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
       }
-      bspl1.1 <- create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
-      R <- bsplinepen(bspl1.1, Lfdobj = 1)
+      bspl1.1 <- fda::create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
+      R <- fda::bsplinepen(bspl1.1, Lfdobj = 1)
       
-      myrules=hermite.h.quadrature.rules(quadnum,normalized=FALSE)
+      myrules=gaussquad::hermite.h.quadrature.rules(quadnum,normalized=FALSE)
       myrules=as.matrix(myrules[[quadnum]])
       initial_value=rep(0,(betadim+gammadim+knotsnum+order+2))
       Z=as.matrix(runif(n,-1,1))
@@ -177,12 +177,12 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       knots <- seq(0,1  , length.out = (knotsnum + 2))
       knots=knots[3:length(knots)-1]
       for (i in 1:n) {
-        blC[[i]]=t(ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
+        blC[[i]]=t(splines2::ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
       }
-      bspl1.1 <- create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
-      R <- bsplinepen(bspl1.1, Lfdobj = 1)
+      bspl1.1 <- fda::create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
+      R <- fda::bsplinepen(bspl1.1, Lfdobj = 1)
       
-      myrules=hermite.h.quadrature.rules(quadnum,normalized=FALSE)
+      myrules=gaussquad::hermite.h.quadrature.rules(quadnum,normalized=FALSE)
       myrules=as.matrix(myrules[[quadnum]])
       initial_value=rep(0,(betadim+gammadim+knotsnum+order+2))
       parest=MainFunc(initial_value,myrules,Delta,X,Z,n,ni,r,blC,betadim,gammadim,itermax,tol,pen.ind,lambda,R)
@@ -226,12 +226,12 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
     knots <- seq(0,1  , length.out = (knotsnum + 2))
     knots=knots[3:length(knots)-1]
     for (i in 1:n) {
-      blC[[i]]=t(ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
+      blC[[i]]=t(splines2::ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
     }
-    bspl1.1 <- create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
-    R <- bsplinepen(bspl1.1, Lfdobj = 1)
+    bspl1.1 <- fda::create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
+    R <- fda::bsplinepen(bspl1.1, Lfdobj = 1)
     
-    
+
     myrules=cbind(c(0,0),c(1/2,1/2))
     initial_value=rep(0,(betadim+gammadim+knotsnum+order+1))
     parest=MainFuncnocluster(initial_value,myrules,Delta,X,Z,n,ni,r,blC,betadim,gammadim,itermax,tol,pen.ind,lambda,R)
