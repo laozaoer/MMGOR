@@ -69,6 +69,50 @@ data_for_est=function(r,beta,gamma,theta,n,H){
   
   return(list(X=X,Z=Z,n=n,ni=mi,r=r,Delta=Delta,C=C))
 }
+Sim_data=function(r,beta,gamma,theta,n,H,C_inte=c(0,1)){
+  betadim=length(beta)
+  gammadim=length(gamma)
+  Z=matrix(runif(n*gammadim,-1,1),nrow = n,ncol = gammadim)
+  mi=rep(0,n)
+  b=rnorm(n,0,1)
+  for(i in 1:n){
+    mi[i]=extraDistr::rtpois(1,exp(1.7),a=1,b=8)
+  }
+  C=list()
+  length(C)=n+1
+  for(i in 1:n){
+    C[[i]]=runif(mi[i],C_inte[1],C_inte[2])
+  }
+  X=list()
+  length(X)=n
+  for (i in 1:n) {
+    X[[i]]=matrix(runif(mi[i]*betadim,-1,1),nrow = mi[i],ncol=betadim)
+  }
+  
+  
+  
+  rawC=suppressWarnings(Generate_T(X,Z,b,r,beta,gamma,theta,n,mi,H))
+  lowC=0
+  upC=quantile(as.numeric(as.character(unlist(rawC))),probs = 0.85)
+  
+  for(i in 1:n){
+    C[[i]]=runif(mi[i],lowC,upC)
+  }
+  C[[n+1]]=upC
+  Delta=list()
+  length(Delta)=n
+  for (i in 1:n) {
+    Delta[[i]]=rep(0,mi[i])
+    for (j in 1:mi[i]) {
+      if(rawC[[i]][j]<=C[[i]][j]){
+        Delta[[i]][j]=1
+      }
+    }
+  }
+  
+  
+  return(list(X=X,Z=Z,n=n,ni=mi,r=r,Delta=Delta,C=C))
+}
 
 
 GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30){
