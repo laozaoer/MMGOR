@@ -8,4 +8,5 @@ Maintainer: Tong Wang <wangtong@nankai.edu.cn>
 Description:Parameter estimation and standard errors calculation for the generalized odds rate model with clustered current status data. The code can also handle the non-clustered data scenario. 
 License: Unlimited
 Imports: Rcpp (>= 1.0.4.6),gaussquad,extraDistr,fda,splines2,nleqslv,numDeriv
+Depends: gaussquad
 LinkingTo: Rcpp, RcppArmadillo
