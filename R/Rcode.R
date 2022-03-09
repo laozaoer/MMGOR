@@ -69,19 +69,19 @@ data_for_est=function(r,beta,gamma,theta,n,H){
   
   return(list(X=X,Z=Z,n=n,ni=mi,r=r,Delta=Delta,C=C))
 }
-Sim_data=function(r,beta,gamma,theta,n,H,C_inte){
+SIM_DATA=function(r,beta,gamma,theta,n,H,up.quantile,par_size){
   betadim=length(beta)
   gammadim=length(gamma)
   Z=matrix(runif(n*gammadim,-1,1),nrow = n,ncol = gammadim)
   mi=rep(0,n)
   b=rnorm(n,0,1)
   for(i in 1:n){
-    mi[i]=extraDistr::rtpois(1,exp(1.7),a=1,b=8)
+    mi[i]=extraDistr::rtpois(1,par_size[1],a=par_size[2],b=par_size[3])
   }
   C=list()
   length(C)=n+1
   for(i in 1:n){
-    C[[i]]=runif(mi[i],C_inte[1],C_inte[2])
+    C[[i]]=runif(mi[i],0,1)
   }
   X=list()
   length(X)=n
@@ -93,12 +93,12 @@ Sim_data=function(r,beta,gamma,theta,n,H,C_inte){
   
   rawC=suppressWarnings(Generate_T(X,Z,b,r,beta,gamma,theta,n,mi,H))
   lowC=0
-  upC=quantile(as.numeric(as.character(unlist(rawC))),probs = 0.85)
-  
+  upC=quantile(as.numeric(as.character(unlist(rawC))),probs = up.quantile)
+
   for(i in 1:n){
     C[[i]]=runif(mi[i],lowC,upC)
   }
-  C[[n+1]]=upC
+  C[[n+1]]=c(lowC,upC)
   Delta=list()
   length(Delta)=n
   for (i in 1:n) {
@@ -117,12 +117,14 @@ Sim_data=function(r,beta,gamma,theta,n,H,C_inte){
 
 GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30){
   
+  
+  cluster.ind=!(all(ni==rep(1,n)))
   if(cluster.ind){
     if(is.null(X)){
       betadim=0
       gammadim=ncol(Z)
-      lowC=0
-      upC=C[[n+1]]
+      lowC=C[[n+1]][1]
+      upC=C[[n+1]][2]
       blC <- list()
       length(blC) <- n
       knots <- seq(0,1  , length.out = (knotsnum + 2))
@@ -169,8 +171,8 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
     }else if(is.null(Z)){
       betadim=ncol(X[[1]])
       gammadim=0
-      lowC=0
-      upC=C[[n+1]]
+      lowC=C[[n+1]][1]
+      upC=C[[n+1]][2]
       blC <- list()
       length(blC) <- n
       knots <- seq(0,1  , length.out = (knotsnum + 2))
@@ -214,8 +216,8 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       betadim=ncol(X[[1]])
       gammadim=ncol(Z)
       
-      lowC=0
-      upC=C[[n+1]]
+      lowC=C[[n+1]][1]
+      upC=C[[n+1]][2]
       blC <- list()
       length(blC) <- n
       knots <- seq(0,1  , length.out = (knotsnum + 2))
@@ -263,8 +265,8 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
     betadim=ncol(X[[1]])
     gammadim=ncol(Z)
     
-    lowC=0
-    upC=C[[n+1]]
+    lowC=C[[n+1]][1]
+    upC=C[[n+1]][2]
     blC <- list()
     length(blC) <- n
     knots <- seq(0,1  , length.out = (knotsnum + 2))

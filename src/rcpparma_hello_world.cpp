@@ -667,15 +667,23 @@ arma::vec UpdateOnce(const arma::vec&lastpar,const arma::mat&rules,const arma::f
     arma::mat pensecond;
     arma::mat exppsi;
     for(int i=0;i<n;i++){
-        
-        for(int k=0;k<order;k++){
-            Derivresult=DerivCal(rules(k,0),lastpar,Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
-            ParFirstDeriv=ParFirstDeriv+weightmat(k,i)*Derivresult(0);
-            PsiFirstDeriv=PsiFirstDeriv+weightmat(k,i)*Derivresult(2);
-            ParSecond=ParSecond+weightmat(k,i)*Derivresult(1);
-            PsiSecond=PsiSecond+weightmat(k,i)*Derivresult(3);
-            // std::cout<<i<<k<<ParFirstDeriv;
+        if(ni(i)==1){
+            Derivresult=DerivCal(0,lastpar,Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
+            ParFirstDeriv=ParFirstDeriv+Derivresult(0);
+            PsiFirstDeriv=PsiFirstDeriv+Derivresult(2);
+            ParSecond=ParSecond+Derivresult(1);
+            PsiSecond=PsiSecond+Derivresult(3);
+        }else{
+            for(int k=0;k<order;k++){
+                Derivresult=DerivCal(rules(k,0),lastpar,Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
+                ParFirstDeriv=ParFirstDeriv+weightmat(k,i)*Derivresult(0);
+                PsiFirstDeriv=PsiFirstDeriv+weightmat(k,i)*Derivresult(2);
+                ParSecond=ParSecond+weightmat(k,i)*Derivresult(1);
+                PsiSecond=PsiSecond+weightmat(k,i)*Derivresult(3);
+                // std::cout<<i<<k<<ParFirstDeriv;
+            }
         }
+
     }
     if(penind){
         exppsi=exp(lastpar.subvec(betadim+gammadim+1,lastpar.n_elem-1));
@@ -963,15 +971,24 @@ double testquadrature1current(const arma::vec&parameters,const arma::mat&rules,c
     arma::vec estpsi=parameters.subvec(betadim+gammadim+1,totaldim-1);
     for(int i=0;i<n;i++){
         
-        for(int k=0;k<order;k++){
-            functionvalue(k)=likelihoodfunc1current(rules(k,0),parameters,
-                          Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
+        if(ni(i)==1){
+            term1=likelihoodi(0,parameters,
+                                         Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
+            if(term1<std::pow(10,-30)){
+                term1=std::pow(10,-30);}
+            result=result+std::log(term1);
+        }else{
+            for(int k=0;k<order;k++){
+                functionvalue(k)=likelihoodfunc1current(rules(k,0),parameters,
+                              Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
+            }
+            
+            term1=sum(functionvalue%weightvec);
+            if(term1<std::pow(10,-30)){
+                term1=std::pow(10,-30);}
+            result=result+std::log(term1);
         }
         
-        term1=sum(functionvalue%weightvec);
-        if(term1<std::pow(10,-30)){
-            term1=std::pow(10,-30);}
-        result=result+std::log(term1);
         
     }
     if(penind){

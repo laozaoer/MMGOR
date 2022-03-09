@@ -13,7 +13,7 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   
 
   \item{Delta}{
-        A list of \eqn{n} components, the \eqn{i}th component of the list is an \eqn{n_i\times 1} vector containing  indicators for censoring. The values 0 and 1 indicate left censored and right censored, respectively.}
+        A list of \eqn{n} components, the \eqn{i}th component of the list is an \eqn{n_i\times 1} vector containing  indicators for censoring. The values 1 and 0 indicate left censored and right censored, respectively.}
         
   \item{X}{
   A list of \eqn{n} components, the \eqn{i}th component is an \eqn{n_i\times p} matrix of  subject-level covariates. All columns of each matrix is assumed to be binary or numeric. For including a nominal categorical variable, the corresponding dummy variables must be included in this matrix. If there is no subject-level covariate (that means \eqn{p=0}), then set \eqn{X=}NULL.
@@ -26,9 +26,9 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   \item{ni}{
   An \eqn{n\times 1} vector of integers. The sum of the elements of this vector equals to \eqn{N}. }
   \item{r}{
-  A scalar that specifies the  generalized odds rate model.}
+  A scalar that specifies the  generalized odds rate model. The value of \eqn{r} must be non-negative. In this function \eqn{r=0} denotes the GOR model with \eqn{r\rightarrow 0}. }
  \item{C}{
- A list of \eqn{n} components, the \eqn{i}th component is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th unit. The inspection time must be positive for all subjects. 
+ A list of \eqn{n+1} components, the \eqn{i}th component of the first \eqn{n} components is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th unit. The inspection time must be positive for all subjects. The \eqn{(n+1)}th component of \eqn{C} is the lower and upper bounds of inspection times. The bounds should not be reached.
  
  }
     \item{knotsnum}{
@@ -91,26 +91,63 @@ H=function(t) log(1+t)+t^(3/2) # specify the H function
 
 #Scenario 1
 #3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
-data=Sim_data(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H,C_inte=c(0,1))
+data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
 #estimate the parameters
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 2
 #only 2 unit-level covariates (p=0,q=2)
-data=Sim_data(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H,C_inte=c(0,1))
+data=SIM_DATA(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
 #estimate the parameters
 result=GOR_MM(data$Delta,X=NULL,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 3
 #only 3 subject-level covariates (p=3,q=0)
-data=Sim_data(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H,C_inte=c(0,1))
+data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
 result=GOR_MM(data$Delta,data$X,Z=NULL,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 4
 #3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
 #no clustering effect
-data=Sim_data(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H,C_inte=c(0,1))
+data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,cluster.ind = FALSE,
 knotsnum = 2,order=2)
+
+# Scenario 5
+# Data generation without the function SIM_DATA
+n=100
+ni= rpois(n, 4)
+ni[ni<1]<-1
+ni[ni>10]<-10
+p=2;
+q=1;
+gamma=rep(-0.5, q)
+beta=rep(0.5, p)
+theta=0.8
+xcov<-list()
+zcov<-c()
+mytime<-list()
+mydelta<-list()
+myinspection<-list()
+zcov<-matrix(runif(n*q),nrow = n,ncol = q)
+
+for( j in 1:n){  
+  
+  xcov[[j]]<- matrix( runif((p*ni[j]), -1, 1), ncol=p )  
+  
+  myrate= exp(as.numeric(zcov[j]%*%gamma)+
+                as.numeric(xcov[[j]]%*%beta)-3+theta*rnorm(1))
+  mytime[[j]]<-40+ rexp(ni[j],myrate)
+  myinspection[[j]]<- runif(ni[j], 40, 90)
+  mydelta[[j]]<- as.numeric(mytime[[j]]<myinspection[[j]] )
+}
+myinspection[[n+1]]=c(40,90)
+# End of data generation
+
+### Analysis of the data using the GOR_MM function 
+result=GOR_MM(mydelta,xcov,zcov,n,ni,r=0,
+              myinspection,knotsnum = 2,order=2)
+
+
 
 }
