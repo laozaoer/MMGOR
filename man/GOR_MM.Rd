@@ -24,7 +24,7 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
 }
   \item{n}{An integer that denotes the number of units (clusters). }
   \item{ni}{
-  An \eqn{n\times 1} vector of integers. The sum of the elements of this vector equals to \eqn{N}. }
+  An \eqn{n\times 1} vector of integers. The sum of the elements of this vector equals to \eqn{N}. Each entry of this vector must be greater than one. If all \eqn{n} entries are one, then it is no longer a clustered data, and cluster.ind is set to FALSE.}
   \item{r}{
   A scalar that specifies the  generalized odds rate model. The value of \eqn{r} must be non-negative. In this function \eqn{r=0} denotes the GOR model with \eqn{r\rightarrow 0}. }
  \item{C}{
@@ -91,25 +91,29 @@ H=function(t) log(1+t)+t^(3/2) # specify the H function
 
 #Scenario 1
 #3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
-data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
+data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=1,n=300,H=H,up.quantile=0.85,
+par_size=c(exp(1.7),1,8))
 #estimate the parameters
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 2
 #only 2 unit-level covariates (p=0,q=2)
-data=SIM_DATA(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
+data=SIM_DATA(r=0,beta=c(0),gamma=c(-1,1),theta=1,n=300,H=H,up.quantile=0.85,
+par_size=c(exp(1.7),1,8))
 #estimate the parameters
 result=GOR_MM(data$Delta,X=NULL,data$Z,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 3
 #only 3 subject-level covariates (p=3,q=0)
-data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
+data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(0),theta=1,n=300,H=H,up.quantile=0.85,
+par_size=c(exp(1.7),1,8))
 result=GOR_MM(data$Delta,data$X,Z=NULL,data$n,data$ni,r=data$r,data$C,knotsnum = 2,order=2)
 
 #Scenario 4
 #3 subject-level covariates, 2 unit-level covariates (p=3,q=2)
 #no clustering effect
-data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H,up.quantile=0.85,par_size=c(exp(1.7),1,8))
+data=SIM_DATA(r=0,beta=c(-1,1,0.5),gamma=c(-1,1),theta=0,n=300,H=H,up.quantile=0.85,
+par_size=c(exp(1.7),1,8))
 result=GOR_MM(data$Delta,data$X,data$Z,data$n,data$ni,r=data$r,data$C,cluster.ind = FALSE,
 knotsnum = 2,order=2)
 
