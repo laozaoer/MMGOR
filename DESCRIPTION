@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2022-03-01
 Author: Tong Wang, Kejun He, Wei Ma, Dipankar Bandyopadhyay, Samiran Sinha
 Maintainer: Tong Wang <wangtong@nankai.edu.cn>
-Description:Parameter estimation and standard errors calculation for the generalized odds rate model with clustered current status data. The code can also handle the non-clustered data scenario. This package contains two functions, GOR_MM and SIM_DATA. GOR_MM is used for analyzing data using the methodology proposed in Wang et al. Sim_data is used for simulating clustered/nonclustered current status data using the GOR model.   
+Description:Parameter estimation and standard errors calculation for the generalized odds rate model with clustered current status data. The code can also handle the non-clustered data scenario. This package contains two functions, GOR_MM and SIM_DATA. GOR_MM is used for analyzing data using the methodology proposed in Wang et al. SIM_DATA is used for simulating clustered/nonclustered current status data using the GOR model.   
 License: Unlimited
 Imports: Rcpp (>= 1.0.4.6),gaussquad,extraDistr,fda,splines2,nleqslv,numDeriv
 Depends: gaussquad

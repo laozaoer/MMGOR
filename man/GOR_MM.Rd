@@ -28,7 +28,7 @@ pen.ind=FALSE,lambda = 0,itermax=500,tol=1e-7,quadnum=30)
   \item{r}{
   A scalar that specifies the  generalized odds rate model. The value of \eqn{r} must be non-negative. In this function \eqn{r=0} denotes the GOR model with \eqn{r\rightarrow 0}. }
  \item{C}{
- A list of \eqn{n+1} components, the \eqn{i}th component of the first \eqn{n} components is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th unit. The inspection time must be positive for all subjects. The \eqn{(n+1)}th component of \eqn{C} is the lower and upper bounds of inspection times. The bounds should not be reached.
+ A list of \eqn{n+1} components, the \eqn{i}th component of the first \eqn{n} components is a \eqn{n_i\times 1} vector containing the inspection time of all \eqn{n_i} subjects within the \eqn{i}th unit. The inspection time must be positive for all subjects. The \eqn{(n+1)}th component is the lower and upper bounds of inspection times. The bounds should not be reached.
  
  }
     \item{knotsnum}{
