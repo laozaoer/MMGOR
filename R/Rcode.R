@@ -121,6 +121,7 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
   lowC=min(Cvector)-0.005*Crange
   upC=max(Cvector)+0.005*Crange
   cluster.ind=!(all(ni==rep(1,n)))
+  if(cluster.ind){
     if(is.null(X)){
       betadim=0
       gammadim=ncol(Z)
@@ -257,6 +258,52 @@ GOR_MM=function(Delta,X,Z,n,ni,r,C,knotsnum,order,cluster.ind=TRUE,pen.ind=FALSE
       AIC=-log_likelihood+(1+df/n)/(1-(df+2)/n)
       
     }
+  }else{
+    
+    
+    betadim=ncol(X[[1]])
+    gammadim=ncol(Z)
+    
+
+    blC <- list()
+    length(blC) <- n
+    knots <- seq(0,1  , length.out = (knotsnum + 2))
+    knots=knots[3:length(knots)-1]
+    for (i in 1:n) {
+      blC[[i]]=t(splines2::ibs((C[[i]]-lowC)/(upC-lowC),knots = knots,degree=order,Boundary.knots = c(0,1),intercept = TRUE))
+    }
+    bspl1.1 <- fda::create.bspline.basis(rangeval = c(0,1),breaks = c(0,knots,1),norder = (order+1))
+    R <- fda::bsplinepen(bspl1.1, Lfdobj = 1)
+    
+
+    myrules=cbind(c(0,0),c(1/2,1/2))
+    initial_value=rep(0,(betadim+gammadim+knotsnum+order+1))
+    parest=MainFuncnocluster(initial_value,myrules,Delta,X,Z,n,ni,r,blC,betadim,gammadim,itermax,tol,pen.ind,lambda,R)
+    
+    hessian1=numDeriv::hessian(func=testquadrature1currentnocluster,x=parest[,1],rules=myrules,Delta=Delta,
+                               X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=FALSE,lambda=0,R=R)
+    
+    hessian=numDeriv::hessian(func=testquadrature1currentnocluster,x=parest[,1],rules=myrules,Delta=Delta,
+                              X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=pen.ind,lambda=lambda,R=R)
+    df=sum(diag(hessian1%*%(solve(hessian,tol=1e-40))))
+    var=diag(solve(hessian,tol=1e-40))
+    result=cbind(parest[(1:(betadim+gammadim)),1],var[1:(betadim+gammadim)])
+    result=as.data.frame(result)
+    colnames(result)=c("Est","SE")
+    log_likelihood=testquadrature1currentnocluster(parest[,1],rules=myrules,Delta=Delta,
+                                                   X=X,Z=(Z),n=n,ni=ni,r=r,blC=blC,betadim=betadim,gammadim=gammadim,penind=FALSE,lambda=0,R=R)
+    for(i in 1:betadim){
+      rownames(result)[i]=paste("beta",i,sep = "_")
+    }
+    for (i in ((betadim+1):(gammadim+betadim))) {
+      rownames(result)[i]=paste("gamma",i-betadim,sep="_")
+    }
+    result[,2]=sqrt(result[,2])
+    result=round(result,digits = 3)
+    AIC=-log_likelihood+(1+df/n)/(1-(df+2)/n)
+    
+  }
+  
   
   
   

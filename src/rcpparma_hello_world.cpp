@@ -965,13 +965,7 @@ double testquadrature1current(const arma::vec&parameters,const arma::mat&rules,c
     arma::vec estpsi=parameters.subvec(betadim+gammadim+1,totaldim-1);
     for(int i=0;i<n;i++){
         
-        if(ni(i)==1){
-            term1=likelihoodi(0,parameters,
-                                         Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
-            if(term1<std::pow(10,-30)){
-                term1=std::pow(10,-30);}
-            result=result+std::log(term1);
-        }else{
+
             for(int k=0;k<order;k++){
                 functionvalue(k)=likelihoodfunc1current(rules(k,0),parameters,
                               Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
@@ -981,7 +975,7 @@ double testquadrature1current(const arma::vec&parameters,const arma::mat&rules,c
             if(term1<std::pow(10,-30)){
                 term1=std::pow(10,-30);}
             result=result+std::log(term1);
-        }
+        
         
         
     }
