@@ -667,13 +667,7 @@ arma::vec UpdateOnce(const arma::vec&lastpar,const arma::mat&rules,const arma::f
     arma::mat pensecond;
     arma::mat exppsi;
     for(int i=0;i<n;i++){
-        if(ni(i)==1){
-            Derivresult=DerivCal(0,lastpar,Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
-            ParFirstDeriv=ParFirstDeriv+Derivresult(0);
-            PsiFirstDeriv=PsiFirstDeriv+Derivresult(2);
-            ParSecond=ParSecond+Derivresult(1);
-            PsiSecond=PsiSecond+Derivresult(3);
-        }else{
+
             for(int k=0;k<order;k++){
                 Derivresult=DerivCal(rules(k,0),lastpar,Delta(i),X(i),trans(Z.row(i)),ni(i),r,blC(i),betadim,gammadim);
                 ParFirstDeriv=ParFirstDeriv+weightmat(k,i)*Derivresult(0);
@@ -682,7 +676,7 @@ arma::vec UpdateOnce(const arma::vec&lastpar,const arma::mat&rules,const arma::f
                 PsiSecond=PsiSecond+weightmat(k,i)*Derivresult(3);
                 // std::cout<<i<<k<<ParFirstDeriv;
             }
-        }
+        
 
     }
     if(penind){
